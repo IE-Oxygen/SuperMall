@@ -1,28 +1,60 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <keep-alive exclude="Detail">
+          <router-view  v-if="isRouterAlive"></router-view>
+    </keep-alive>
+    <maintabbar></maintabbar>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Maintabbar from './components/content/Maintabbar.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    Maintabbar
+  },
+  provide() { // 注册一个方法利用route刷新
+    return {
+      reload: this.reload
+    }
+  },
+  data() {
+    return {
+      test: 'aaaa',
+      isRouterAlive: true
+    };
+  },
+  mounted() {
+    // 检测断网
+    window.addEventListener("offline", () => {
+        console.log("已断网");
+        this.$toast.showToast('已断网',3000)
+    });
+    window.addEventListener("online", () => {
+        console.log("网络已连接");
+        this.reload();
+        this.$toast.showToast('网络已连接',2000)
+    });
+},
+  methods: {
+     reload() {
+      this.isRouterAlive = false
+      this.$nextTick(function() {
+        this.isRouterAlive = true
+      })
+    }
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import "./assets/css/base.css";
+  
+  img[lazy="loading"]{
+  display:block;
+  width:50px !important;
+  margin:0 auto;
+  }
 </style>
