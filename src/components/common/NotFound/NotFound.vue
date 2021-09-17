@@ -1,6 +1,7 @@
 <template>
   <div class="notfound">
     <div class="center">
+      <span>404</span>
       <span>NOT FOUND</span>
       <img src="@/assets/img/tabbar/home1-active.svg" @click="goHome">
     </div>
@@ -40,6 +41,10 @@ export default {
   left:50%;
   transform: translate(-50%,-50%);
   line-height: 50px;
+}
+span{
+  display: block;
+  text-align: center;
 }
 img{
   display: block;
